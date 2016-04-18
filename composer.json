@@ -2,7 +2,7 @@
   "name": "skillsource/eboekhouden",
   "description": "A Magento 2 module that is a connection to eboekhouden.nl",
   "type": "magento2-module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": [
     "MIT"
   ],
