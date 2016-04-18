@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+	<!-- TAX rewrites -->
+    <preference for="Magento\Tax\Block\Adminhtml\Rate\Form" type="Eboekhouden\Export\Block\Adminhtml\Rate\Form" />
+
+    <preference for="Magento\Tax\Model\Calculation\Rate\Converter" type="Eboekhouden\Export\Model\Calculation\Rate\Converter" />
+    <preference for="Magento\Tax\Model\TaxRateCollection" type="Eboekhouden\Export\Model\TaxRateCollection" />
+    <!-- /TAX rewrites -->
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Invoice\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+        <arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="eboekhouden_mutatie" xsi:type="string">sales_invoice.eboekhouden_mutatie</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="CreditmemoGridAggregator" type="Magento\Sales\Model\ResourceModel\Grid">
+    	<arguments>
+            <argument name="columns" xsi:type="array">
+                <item name="eboekhouden_mutatie" xsi:type="string">sales_creditmemo.eboekhouden_mutatie</item>
+            </argument>
+        </arguments>
+    </virtualType>
+</config>

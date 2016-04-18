@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NOTICE OF LICENSE
+ *
+ * The MIT License
+ *
+ * Copyright (c) 2016 e-Boekhouden.nl
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @package    Eboekhouden_Export
+ * @copyright  Copyright (c) 2016 e-Boekhouden.nl
+ * @license    http://opensource.org/licenses/mit-license.php  The MIT License
+ * @author     e-Boekhouden.nl
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="eboekhouden" translate="label" type="text" sortOrder="1800" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>e-Boekhouden.nl</label>
+            <tab>sales</tab>
+            <!-- resource tag name which we have to defined in the acl.xml -->
+            <resource>Eboekhouden_Export::config_eboekhouden</resource>
+
+            <group id="connector" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Connector logingegevens</label>
+                <comment><![CDATA[U vindt deze gegevens in e-Boekhouden.nl onder Beheer &gt; Instellingen &gt; Magento<br />&nbsp;]]></comment>
+                <field id="username" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Gebruikersnaam</label>
+                </field>
+                <field id="securitycode1" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Beveiligingscode 1</label>
+                </field>
+                <field id="securitycode2" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Beveiligingscode 2</label>
+                </field>
+            </group>
+            <group id="settings" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Instellingen</label>
+                <field id="showxml" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Toon XML (voor ontwikkelaars)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="shippingledgeraccount" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Grootboekrek. voor verzendkosten</label>
+                    <source_model>Eboekhouden\Export\Model\Config\Ledgeraccount</source_model>
+                </field>
+                <field id="shippingcostcenter" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Kostenplaats voor verzendkosten</label>
+                    <source_model>Eboekhouden\Export\Model\Config\Costcenter</source_model>
+                </field>
+                <field id="adjustmentledgeraccount" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Grootboekrek. voor aanpassings kosten</label>
+                    <source_model>Eboekhouden\Export\Model\Config\Ledgeraccount</source_model>
+                    <comment><![CDATA[Bij het aanmaken van een credit memo kun je een extra verrekening aangeven, voor die verrekening hebben we een tegenrekening nodig]]></comment>
+                </field>
+                <field id="paymentfeeledgeraccount" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Grootboekrek. voor additionele betalingskosten</label>
+                    <source_model>Eboekhouden\Export\Model\Config\Ledgeraccount</source_model>
+                </field>
+            </group>
+            <group id="info" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Info</label>
+                <field id="version" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>E-Boekhouden.nl Extensie Versie</label>
+                    <frontend_model>Eboekhouden\Export\Block\Config\Version</frontend_model>
+                   <!-- <frontend_model>Eboekhouden\Export\Block\Config\Source\Info\Version</frontend_model> -->
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

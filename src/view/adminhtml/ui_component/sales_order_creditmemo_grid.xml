@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+        <!--
+         <container name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="eboekhouden_export_order">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">eboekhouden_export_order</item>
+                        <item name="label" xsi:type="string" translate="true">Export naar e-Boekhouden.nl</item>
+                        <item name="url" xsi:type="url" path="eboekhouden_export/sales/order">
+                    </item>
+                </item></argument>
+            </action>
+        </massaction>
+    </container>
+        -->
+    <container name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="eboekhouden_export_order">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">eboekhouden_export_order</item>
+                        <item name="label" xsi:type="string" translate="true">Export naar e-Boekhouden.nl</item>
+                        <item name="url" xsi:type="url" path="eboekhouden_export/sales/creditmemo">
+                    </item>
+                </item></argument>
+            </action>
+        </massaction>
+    </container>
+    <columns name="sales_order_creditmemo_columns">
+        <column name="eboekhouden_mutatie">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">Mutatie nummer</item>
+                    <item name="sortOrder" xsi:type="number">75</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+</listing>
