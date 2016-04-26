@@ -254,20 +254,41 @@ Class Export extends \Magento\Framework\App\Helper\AbstractHelper{
 
             $iGbRekening = $iCostcenter = 0;
             foreach ($aOrderItems as $oItem) {
+                #$oItem->calcRowTotal();
+
                 $sType = $this->_getItemType($oItem);
+
+                $BEDRAGEXCL = $oItem->getRowTotal() - $oItem->getDiscountAmount();
+                $BEDRAGINCL = $BEDRAGEXCL + $oItem->getTaxAmount();
+
+                #$BEDRAGINCL = $oItem->getRowTotalInclTax() - $oItem->getDiscountAmount();
+
 
                 $obj = new \Magento\Framework\DataObject();
                 $obj->setData('itemtype', 'product');
                 $obj->setData('producttype', $sType);
-                $obj->setData('BEDRAGINCL',$oItem->getRowTotalInclTax());
-                $obj->setData('BEDRAGEXCL',$oItem->getRowTotal());
-                $obj->setData('BTWBEDRAG',$oItem->getRowTotalInclTax() - $oItem->getRowTotal());
+                $obj->setData('BEDRAGINCL',$BEDRAGINCL);
+                $obj->setData('BEDRAGEXCL',$BEDRAGEXCL);
+                $obj->setData('BTWBEDRAG',$BEDRAGINCL - $BEDRAGEXCL);
 
                 $sVatCode = $this->_Find_Ebvatcode(
                     'product',
                     $oItem->getOrderItem()->getId(),
                     $oOrder
                 );
+
+               # $f = new \ReflectionClass($oItem);
+
+
+
+               # echo '<pre>';
+               # echo $oItem->getDiscountTaxCompensationAmount();
+
+           # print_r($f->getMethods());
+        #print_r($oItem->getFinalPrice());
+      #print_r($obj->debug());
+        #print_r($oItem->debug());
+
                 /*
                     (int) $oItem->getOrderItem()->getTaxPercent(),
                     $oOrder,
@@ -290,8 +311,8 @@ Class Export extends \Magento\Framework\App\Helper\AbstractHelper{
 
                 $sXml .= $this->_getItemXml($aSettings,$oContainer,$obj);
 
-                $totalBaseAmountItems = $oItem->getRowTotal();
-                $totalBaseAmountInclTaxItems += $oItem->getRowTotalInclTax();
+                $totalBaseAmountItems += $BEDRAGEXCL;
+                $totalBaseAmountInclTaxItems += $BEDRAGINCL;
             }
 
            # debug($oContainer->debug());
@@ -337,9 +358,12 @@ Class Export extends \Magento\Framework\App\Helper\AbstractHelper{
                 $totalBaseAmountItems += $oContainer->getAdjustment();
                 $totalBaseAmountInclTaxItems += $oContainer->getAdjustment();
             }
-            debug($oContainer->debug());
+            #debug($oContainer->debug());
             if (!$oContainer instanceof \Magento\Sales\Model\Order\Invoice\Creditmemo) {
 
+              #  echo $totalBaseAmountInclTaxItems;
+              #  echo '<pre>';
+              #  print_r($oContainer->debug());
 
                 $total = $oContainer->getGrandTotal();
                 if (0.0001 < abs($total - $totalBaseAmountInclTaxItems)) {
@@ -352,7 +376,11 @@ Class Export extends \Magento\Framework\App\Helper\AbstractHelper{
                     $obj->setData('BEDRAGEXCL',$BEDRAGEXCL);
                     $obj->setdata('BTWBEDRAG',$BEDRAGINCL - $BEDRAGEXCL);
                     $sXml .= $this->_getItemXml($aSettings,$oContainer,$obj);
+                 # echo '<textarea style="width:800px; height:1000px;">', $sXml, '</textarea>';
+                 # die();
                 }
+
+
             }
 
             $sXml .= '
@@ -360,7 +388,7 @@ Class Export extends \Magento\Framework\App\Helper\AbstractHelper{
   </MUTATIE>';
 
 
-            $this->logger->addDebug($sXml);
+         #   $this->logger->addDebug($sXml);
 
 
             $sPostAction = (!empty($iExistingMutatieNr)) ? 'ALTER_MUTATIE' : 'ADD_MUTATIE';

@@ -60,17 +60,6 @@ class InstallSchema implements InstallSchemaInterface
         $connection = $installer->getConnection();
 
         $columns = [
-
-            [
-                'table' => $installer->getTable('tax_calculation_rate'),
-                'name' => 'tax_ebvatcode',
-                'definition' => [
-                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_VARBINARY,
-                    'length' => '20',
-                    'nullable' => true,
-                    'comment' => 'Eboekhouden ebvatcode',
-                ],
-            ],
             [
                 'table' => $installer->getTable('sales_invoice'),
                 'name' => 'eboekhouden_mutatie',
@@ -106,7 +95,17 @@ class InstallSchema implements InstallSchemaInterface
                     'nullable' => true,
                     'comment' => 'Eboekhouden Mutatie',
                 ],
-            ]
+            ],
+            [
+                'table' => $installer->getTable('tax_calculation_rate'),
+                'name' => 'tax_ebvatcode',
+                'definition' => [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_VARBINARY,
+                    'length' => '20',
+                    'nullable' => true,
+                    'comment' => 'Eboekhouden ebvatcode',
+                ],
+            ],
         ];
 
         foreach ($columns as $column) {

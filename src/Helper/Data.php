@@ -36,14 +36,23 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
 
 	private $_ModuleResource;
-	private $_scopeConfig;
+    private $_scopeConfig;
+    protected $_request;
+    private $_urlInterface;
+    private $_messageManager;
 
 	public function __construct(
 		\Magento\Framework\Module\ModuleResource $ModuleResource,
-		\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+		\Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Framework\App\Request\Http $request,
+        \Magento\Framework\UrlInterface $urlInterface,
+        \Magento\Framework\Message\ManagerInterface $messageManager
 	){
 	   $this->_ModuleResource = $ModuleResource;
-	   $this->_scopeConfig = $scopeConfig;
+       $this->_scopeConfig = $scopeConfig;
+       $this->_request = $request;
+       $this->_urlInterface = $urlInterface;
+       $this->_messageManager = $messageManager;
 	}
     public function getExtensionVersion()
     {
@@ -82,17 +91,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         if (empty($aSettings['sConUser']) || empty($aSettings['sConWord']) || empty($aSettings['sConGuid']))
         {
 
-            $sCurrentUrl = Mage::helper('core/url')->getCurrentUrl();
-            if (    !Mage::app()->getRequest()->getParam('eboekhouden_config_error', 0)
-                 && !preg_match('|/system_config/|i',$sCurrentUrl)
+            $sCurrentUrl = $this->_urlInterface->getCurrentUrl();
+            if (
+                !$this->_request->getParam('eboekhouden_config_error', 0) &&
+                !preg_match('|/system_config/|i',$sCurrentUrl)
                )
             {
                 $aSettings['bConOK'] = 0;
-                $sErrorMsg .= Mage::helper('Eboekhouden_Export')
-                        ->__('Configuratie is niet volledig ingevuld, ga naar het menu "%s","%s" en kies "e-Boekhouden.nl" uit de zijbalk. Vul de gegevens in onder "Connector Login Gegevens"',
-                             Mage::helper('adminhtml')->__('System'), Mage::helper('adminhtml')->__('Configuration'));
-                Mage::getSingleton('core/session')->addError($sErrorMsg);
-                Mage::app()->getRequest()->setParam('eboekhouden_config_error', 1);
+                $sErrorMsg .= __('Configuratie is niet volledig ingevuld, ga naar het menu "%1","%2" en kies "e-Boekhouden.nl" uit de zijbalk. Vul de gegevens in onder "Connector Login Gegevens"',__('Stores'), __('Configuration'));
+
+                $this->_messageManager->addError($sErrorMsg);
+               # Mage::getSingleton('core/session')->addError($sErrorMsg);
+                $this->_request->setParam('eboekhouden_config_error', 1);
             }
         }
         else
